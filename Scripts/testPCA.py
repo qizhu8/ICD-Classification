@@ -3,7 +3,10 @@ from ourUtil.PCAICD.myPCAClass import MyPCAClass
 csvFileName = "../Data/2022 Initial ICD-10-CM Mappings.csv"
 myPCA = MyPCAClass(csvFileName=csvFileName, visualDim=3, ICDLeftnChar=3)
 
-ICDWordVector = myPCA.ICDDescs2Vector()
+myPCA.ICDDescs2Vector()
+
+myPCA.kmeanThenPCA()
+
 # principleResult = myPCA.PCA(cleanRun=True) #
 principleResult = myPCA.PCA(cleanRun=False) #
 # myPCA.plotPCAResult(principleResult, imshow=False)

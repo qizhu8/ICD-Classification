@@ -143,7 +143,41 @@ class MyPCAClass:
     
     def kmeanThenPCA(self):
         kmeanDict = {}
+        # 围观佳颖写代码 :)
+        for ICD, desc in zip(self.df[myIO.ICDCODE], self.df[myIO.DESCRIPTION]):
+            label = self._getICDPrefix(ICD)
+            if label not in kmeanDict:
+                kmeanDict[label] = []
+            kmeanDict[label].append(self.ICDVector[ICD])
         
+        labelList = list(kmeanDict.keys())
+        kmeanMatrix = []
+        for label in labelList:
+            kmeanMatrix.append(np.mean(kmeanDict[label], axis=0))
+        kmeanMatrix = np.stack(kmeanMatrix, axis=0)
+
+        # apply PCA to kmeanMatrix
+        pca = PCA(n_components=self.visualDim)
+        principleComponents = pca.fit_transform(kmeanMatrix)
+        print("kmean PCA shape", principleComponents.shape)
+
+        # visualize
+        figureName = "PCA_kmean_{}d.png".format(self.visualDim)
+
+        if self.visualDim == 2:
+            ax = plt.axes()
+        elif self.visualDim ==3:
+            ax = plt.axes(projection ='3d')
+
+        for labelId, label in enumerate(labelList):
+            R, G, B = self.getColor(labelId)
+            if self.visualDim == 2:
+                ax.plot(principleComponents[labelId, 0], principleComponents[labelId, 1], '*', color=(R, G, B), label=label)
+            elif self.visualDim == 3:
+                ax.plot(principleComponents[labelId, 0], principleComponents[labelId, 1], principleComponents[labelId, 2], '*', color=(R, G, B), label=label)
+
+        plt.show()
+
 
     def _getICDPrefix(self, ICDCode):
         if len(ICDCode) >= self.ICDLeftnChar:
