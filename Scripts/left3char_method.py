@@ -1,16 +1,14 @@
 import pandas as pd
 import numpy as np
 
+import ourUtil.myIO as myIO
 
 csvFileName = "../Data/2022 Initial ICD-10-CM Mappings.csv"
-DESCRIPTION = "Description"
-ICDCODE = "Diagnosis\nCode"
-
-df = pd.read_csv(csvFileName, delimiter=',', skiprows=3, skipfooter=7)
+df = myIO.loadICDCSVasDF(csvFileName)
 
 # get descriptions
-descs = df[DESCRIPTION]
-ICDs = df[ICDCODE]
+descs = df[myIO.DESCRIPTION]
+ICDs = df[myIO.ICDCODE]
 ICDNum = len(descs)
 
 
