@@ -143,7 +143,6 @@ class MyPCAClass:
     
     def kmeanThenPCA(self):
         kmeanDict = {}
-        # 围观佳颖写代码 :)
         for ICD, desc in zip(self.df[myIO.ICDCODE], self.df[myIO.DESCRIPTION]):
             label = self._getICDPrefix(ICD)
             if label not in kmeanDict:
